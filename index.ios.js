@@ -91,7 +91,7 @@ export default class AwesomeProject extends Component {
 
     //componentDidMount is a lifecycle method which is fired immediately after the first rendering occurs
     componentDidMount() {
-        var pod_url = 'http://www.varsitypodcasts.co.za/category/shows/researchreport/feed';
+        var pod_url = 'https://www.varsitypodcasts.co.za/category/shows/researchreport/feed'; //url needs to be https
         this._parsePodcastFeed(pod_url);
     }
 
@@ -119,17 +119,24 @@ export default class AwesomeProject extends Component {
     _parsePodcastFeed(podcast_url){
     	/***/
     	console.log('Podcast will be fetched');
+    	var that = this;
         var url = podcast_url;
         fetch(url)
-          .then( response => response.json() )
-          .then( jsonData => {
-            console.log(jsonData);
-        /***/
-            this.setState({isLoading: false}); //update isLoading
-	    /***/
-          })
-        .catch( error => console.log('Fetch error ' + error) );
-        /***/
+            .then(function(response) {
+                console.log(response);
+                })
+            .then(function(jsonData) {
+                  //console.log(jsonData);
+                  that.setState({isLoading: false}); //update isLoading
+                })
+            .catch(function(error) {
+                  console.log('There has been a problem with your fetch operation: ' + error.message);
+                });
+
+
+
+
+
 //        const request = require('request');
 //        const parsePodcast = require('node-podcast-parser');
 //        request(podcast_url, (err, res, data) => {
