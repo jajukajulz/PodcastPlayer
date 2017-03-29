@@ -4,6 +4,14 @@
  * @flow
  */
 
+/**
+ * Necessary libraries
+ */
+var DOMParser = require('xmldom').DOMParser;
+
+/**
+ * Necessary imports
+ */
 import React, { Component } from 'react';
 import {
   AppRegistry, //AppRegistry is the JS entry point to running all React Native apps. App root components should register themselves with AppRegistry.registerComponent, then the native system can load the bundle for the app and then actually run the app when it's ready by invoking AppRegistry.runApplication
@@ -13,7 +21,8 @@ import {
   Navigator, //Navigator handles the transition between different scenes in your app
   TouchableOpacity, //A wrapper for making views respond properly to touches. On press down, the opacity of the wrapped view is decreased, dimming it.
   TouchableHighlight,
-  ActivityIndicator
+  ActivityIndicator,
+  ListView
 } from 'react-native';
 
 //The NavigatorSceneConfigs Object lets you customize your scene navigation. Now add the SceneConfig:
@@ -55,6 +64,12 @@ render() {
             <Text style={styles.welcome}>Go to page two</Text>
           </View>
         </TouchableOpacity>
+        <ListView
+            dataSource={this.props.dataSource}
+            renderRow={this.renderFeed.bind(this)}
+            //style={styles.listView}
+            //list={route.list}
+            />
        </View>
     )
   },
@@ -121,39 +136,48 @@ export default class AwesomeProject extends Component {
     	console.log('Podcast will be fetched');
     	var that = this;
         var url = podcast_url;
+
+//        fetch(REQUEST_URL)
+//      .then((response) => response.text())
+//      .then((responseData) => {
+//        this.setState({
+//          dataSource: this.state.dataSource.cloneWithRows(this.extractData(responseData))
+//        });
+//}).done();
+
         fetch(url)
-            .then(function(response) {
-                console.log(response);
-                })
-            .then(function(jsonData) {
-                  //console.log(jsonData);
-                  that.setState({isLoading: false}); //update isLoading
+            .then((response) => response.text())
+            .then(function(responseData) {
+                  console.log(responseData);
+                  that.setState({
+                        isLoading: false,
+                        dataSource: that._extractData(responseData)
+                        });
                 })
             .catch(function(error) {
                   console.log('There has been a problem with your fetch operation: ' + error.message);
-                });
+                }).done();
+    }
 
+    /**
+     * Extracts data from the XML response
+     * https://github.com/sarantist/react-native-nasa-rss-feed/blob/master/index.android.js
+     */
+    _extractData (text) {
+        var doc = new DOMParser().parseFromString(text, 'text/xml');
+        var items_array = [];
+        var items = doc.getElementsByTagName('item');
 
-
-
-
-//        const request = require('request');
-//        const parsePodcast = require('node-podcast-parser');
-//        request(podcast_url, (err, res, data) => {
-//            if (err) {
-//                console.error('Network error', err);
-//                return;
-//            }
-//
-//            parsePodcast(data, (err, data) => {
-//                if (err) {
-//                    console.error('Parsing error', err);
-//                    return;
-//                }
-//
-//            console.log(data);
-//            });
-//        });
+        for (var i=0; i < items.length; i++) {
+          items_array.push({
+            title: items[i].getElementsByTagName('title')[0].lastChild.data,
+            description: items[i].getElementsByTagName('description')[0].lastChild.data,
+            thumbnail: items[i].getElementsByTagName('enclosure')[0].getAttribute('url'),
+            link: items[i].getElementsByTagName('link')[0].textContent,
+            date: items[i].getElementsByTagName('pubDate')[0].textContent,
+          })
+        }
+        return items_array;
     }
 
     renderLoadingMessage() {
