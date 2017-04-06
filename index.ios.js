@@ -7,7 +7,10 @@
 /**
  * Necessary libraries
  */
+var RESEARCHREPORT_URL = "https://www.varsitypodcasts.co.za/category/shows/researchreport/feed"; //url needs to be https
 var DOMParser = require('xmldom').DOMParser;
+var Dimensions = require('Dimensions');
+var windowSize = Dimensions.get('window');
 
 /**
  * Necessary imports
@@ -22,7 +25,9 @@ import {
   TouchableOpacity, //A wrapper for making views respond properly to touches. On press down, the opacity of the wrapped view is decreased, dimming it.
   TouchableHighlight,
   ActivityIndicator,
-  ListView
+  ListView,
+  Row,
+  Image
 } from 'react-native';
 
 //The NavigatorSceneConfigs Object lets you customize your scene navigation. Now add the SceneConfig:
@@ -55,6 +60,31 @@ var PageOne = React.createClass({
         this.props.navigator.push({id: 2,}); //push appends one or more elements to the end of an array. This alters the array on which the method was called.
     },
 
+      _pressRow(selected_feed) {
+    this.refs.navigator.push({
+      name: 'details',
+      feed_data: selected_feed
+    })
+  },
+
+    /**
+     * List item render
+     */
+      _renderFeed(feed) {
+        return (
+          <TouchableHighlight onPress={() => this._pressRow(feed)}>
+            <View style={styles.container}>
+              <Image
+                source={{uri: feed.thumbnail}}
+                style={styles.thumbnail}/>
+              <View style={styles.rightContainer}>
+                <Text style={styles.title}>{feed.title}</Text>
+              </View>
+            </View>
+          </TouchableHighlight>
+        );
+      },
+
 render() {
     return (
       <View style={[styles.container, {backgroundColor: 'green'}]}>
@@ -66,8 +96,8 @@ render() {
         </TouchableOpacity>
         <ListView
             dataSource={this.props.dataSource}
-            renderRow={this.renderFeed.bind(this)}
-            //style={styles.listView}
+            renderRow={this._renderFeed}
+            style={styles.listView}
             //list={route.list}
             />
        </View>
@@ -99,15 +129,14 @@ export default class AwesomeProject extends Component {
         super(props);
 
         this.state = {
-          wallsJSON: [],
+          dataSource: new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2}), //listview datasource object
           isLoading: true
         };
     }
 
     //componentDidMount is a lifecycle method which is fired immediately after the first rendering occurs
     componentDidMount() {
-        var pod_url = 'https://www.varsitypodcasts.co.za/category/shows/researchreport/feed'; //url needs to be https
-        this._parsePodcastFeed(pod_url);
+        this._parsePodcastFeed(RESEARCHREPORT_URL);
     }
 
 
@@ -116,12 +145,12 @@ export default class AwesomeProject extends Component {
         if(isLoading)
             return this.renderLoadingMessage();
         else
-            return this.renderResults();
+            return this.renderResults(this.state.dataSource); //A component may choose to pass its state down as props to its child components
     }
 
     _renderScene(route, navigator) {
         if (route.id === 1) {
-          return <PageOne navigator={navigator} />
+          return <PageOne navigator={navigator} dataSource={route.dataSource}/> //PageOne will access navigator as this.props.navigator
         } else if (route.id === 2) {
           return <PageTwo navigator={navigator} />
         }
@@ -133,17 +162,9 @@ export default class AwesomeProject extends Component {
 
     _parsePodcastFeed(podcast_url){
     	/***/
-    	console.log('Podcast will be fetched');
+    	console.log('Podcast will be fetched ' + podcast_url);
     	var that = this;
         var url = podcast_url;
-
-//        fetch(REQUEST_URL)
-//      .then((response) => response.text())
-//      .then((responseData) => {
-//        this.setState({
-//          dataSource: this.state.dataSource.cloneWithRows(this.extractData(responseData))
-//        });
-//}).done();
 
         fetch(url)
             .then((response) => response.text())
@@ -151,7 +172,7 @@ export default class AwesomeProject extends Component {
                   console.log(responseData);
                   that.setState({
                         isLoading: false,
-                        dataSource: that._extractData(responseData)
+                        dataSource: that.state.dataSource.cloneWithRows(that._extractData(responseData))
                         });
                 })
             .catch(function(error) {
@@ -172,9 +193,8 @@ export default class AwesomeProject extends Component {
           items_array.push({
             title: items[i].getElementsByTagName('title')[0].lastChild.data,
             description: items[i].getElementsByTagName('description')[0].lastChild.data,
-            thumbnail: items[i].getElementsByTagName('enclosure')[0].getAttribute('url'),
-            link: items[i].getElementsByTagName('link')[0].textContent,
-            date: items[i].getElementsByTagName('pubDate')[0].textContent,
+            mp3: items[i].getElementsByTagName('enclosure')[0].getAttribute('url'),
+            thumbnail: doc.getElementsByTagName('channel')[0].getElementsByTagName('image')[0].childNodes[3].lastChild.data
           })
         }
         return items_array;
@@ -193,11 +213,11 @@ export default class AwesomeProject extends Component {
         );
     }
 
-    renderResults() {
+    renderResults(dataSource) {
         return (
                 <Navigator
-                initialRoute={{id: 1, }}
-                renderScene={this._renderScene}
+                initialRoute={{id: 1, dataSource: dataSource }} //sets up route object with id 1
+                renderScene={this._renderScene} // renderScene of navigator which gives you access to the route and navigator objects.
                 configureScene={this._configureScene} //configureScene prop is Optional function where you can configure scene animations and gestures.
                 navigationBar={
                     <Navigator.NavigationBar
@@ -225,6 +245,7 @@ export default class AwesomeProject extends Component {
 }
 
 const styles = StyleSheet.create({
+
     container: {
         flex: 1,
         justifyContent: 'center',
@@ -243,7 +264,41 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#000'
-        }
+        },
+          thumbnail: {
+    width: 150,
+    height: 150
+},
+  rightContainer: {
+    flex: 1,
+    marginLeft: 10
+},
+  title: {
+    fontSize: 20,
+    textAlign: 'center',
+    color: 'black'
+},
+year: {
+    textAlign: 'center',
+},
+ descriptionText: {
+    fontSize: 20,
+    color: '#FFFFFF'
+  },
+  date: {
+    marginTop: 20,
+    textAlign: 'center',
+    color: '#FF1422'
+  },
+  fullImage: {
+    width: windowSize.width,
+    height: 300,
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0)'
+  },
+  scrollView: {
+    flex:1
+}
 });
 
 AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);
