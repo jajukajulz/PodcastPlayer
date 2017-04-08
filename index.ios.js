@@ -87,19 +87,19 @@ var PageOne = React.createClass({
 
 render() {
     return (
-      <View style={[styles.container, {backgroundColor: 'green'}]}>
+      <View style={[styles.container]}>
         <Text style={styles.welcome}>Greetings!</Text>
-        <TouchableOpacity onPress={this._handlePress}>
-          <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
-            <Text style={styles.welcome}>Go to page two</Text>
-          </View>
-        </TouchableOpacity>
         <ListView
             dataSource={this.props.dataSource}
             renderRow={this._renderFeed}
             style={styles.listView}
             //list={route.list}
             />
+        <TouchableOpacity onPress={this._handlePress}>
+          <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
+            <Text style={styles.welcome}>Go to page two</Text>
+          </View>
+        </TouchableOpacity>
        </View>
     )
   },
@@ -112,7 +112,7 @@ var PageTwo = React.createClass({
 
 render() {
     return (
-      <View style={[styles.container, {backgroundColor: 'purple'}]}>
+      <View style={[styles.container]}>
         <Text style={styles.welcome}>This is page two!</Text>
         <TouchableOpacity onPress={this._handlePress}>
           <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
@@ -188,13 +188,15 @@ export default class AwesomeProject extends Component {
         var doc = new DOMParser().parseFromString(text, 'text/xml');
         var items_array = [];
         var items = doc.getElementsByTagName('item');
+        var podcast_image = doc.getElementsByTagName('channel')[0].getElementsByTagName('image')[0].childNodes[3].lastChild.data
+        podcast_image = podcast_image.replace("http://","https://")
 
         for (var i=0; i < items.length; i++) {
           items_array.push({
             title: items[i].getElementsByTagName('title')[0].lastChild.data,
             description: items[i].getElementsByTagName('description')[0].lastChild.data,
             mp3: items[i].getElementsByTagName('enclosure')[0].getAttribute('url'),
-            thumbnail: doc.getElementsByTagName('channel')[0].getElementsByTagName('image')[0].childNodes[3].lastChild.data
+            thumbnail: podcast_image
           })
         }
         return items_array;
@@ -265,40 +267,40 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#000'
         },
-          thumbnail: {
-    width: 150,
-    height: 150
-},
-  rightContainer: {
-    flex: 1,
-    marginLeft: 10
-},
-  title: {
-    fontSize: 20,
-    textAlign: 'center',
-    color: 'black'
-},
-year: {
-    textAlign: 'center',
-},
- descriptionText: {
-    fontSize: 20,
-    color: '#FFFFFF'
-  },
-  date: {
-    marginTop: 20,
-    textAlign: 'center',
-    color: '#FF1422'
-  },
-  fullImage: {
-    width: windowSize.width,
-    height: 300,
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0)'
-  },
-  scrollView: {
-    flex:1
-}
+    thumbnail: {
+        width: 150,
+        height: 150
+        },
+    rightContainer: {
+        flex: 1,
+        marginLeft: 10
+        },
+    title: {
+        fontSize: 20,
+        textAlign: 'right',
+        color: 'black'
+    },
+    year: {
+        textAlign: 'center',
+    },
+    descriptionText: {
+        fontSize: 20,
+        color: '#FFFFFF'
+    },
+    date: {
+        marginTop: 20,
+        textAlign: 'center',
+        color: '#FF1422'
+    },
+    fullImage: {
+        width: windowSize.width,
+        height: 300,
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0)'
+    },
+    scrollView: {
+        flex:1
+    }
 });
 
 AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);
