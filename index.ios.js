@@ -54,6 +54,7 @@ var CustomSceneConfig = Object.assign({}, BaseConfig, {
 
 
 //We're going to add two Pages to our Navigation Flow.
+//TODO - rename this to BrowseTracksView
 var PageOne = React.createClass({
 
     _handlePress() {
@@ -73,12 +74,12 @@ var PageOne = React.createClass({
       _renderFeed(feed) {
         return (
           <TouchableHighlight onPress={() => this._pressRow(feed)}>
-            <View style={styles.container}>
+            <View style={styles.podcastListRow}>
               <Image
                 source={{uri: feed.thumbnail}}
                 style={styles.thumbnail}/>
               <View style={styles.rightContainer}>
-                <Text style={styles.title}>{feed.title}</Text>
+                <Text style={styles.podcastTitle}>{feed.title}</Text>
               </View>
             </View>
           </TouchableHighlight>
@@ -88,7 +89,6 @@ var PageOne = React.createClass({
 render() {
     return (
       <View style={[styles.container]}>
-        <Text style={styles.welcome}>Greetings!</Text>
         <ListView
             dataSource={this.props.dataSource}
             renderRow={this._renderFeed}
@@ -96,7 +96,7 @@ render() {
             //list={route.list}
             />
         <TouchableOpacity onPress={this._handlePress}>
-          <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
+          <View style={{paddingVertical: 5, paddingHorizontal: 20, backgroundColor: 'black'}}>
             <Text style={styles.welcome}>Go to page two</Text>
           </View>
         </TouchableOpacity>
@@ -253,10 +253,9 @@ export default class AwesomeProject extends Component {
 const styles = StyleSheet.create({
 
     container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        flex: 1, //flex attribute of 1 to let it expand to fill it’s parent e.g. the iOS device window
         backgroundColor: '#fff',
+        paddingTop: 30
         },
     welcome: {
         fontSize: 20,
@@ -272,24 +271,19 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff'
         },
     thumbnail: {
-        width: 200,
-        height: 150
+        width: 70,
+        height: 50
         },
     logo: {
         width: 300,
         height: 163
         },
     navbar: {
-      backgroundColor:'#F5FCFF'
+      backgroundColor:'#F5FCFF',
+        //paddingTop: 50
     },
     rightContainer: {
         flex: 1,
-        marginLeft: 10
-        },
-    title: {
-        fontSize: 20,
-        textAlign: 'right',
-        color: 'black'
     },
     year: {
         textAlign: 'center',
@@ -311,7 +305,33 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         flex:1
-    }
+    },
+    podcastListRow: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginLeft: 4,
+      marginRight: 4,
+      padding: 4,
+      borderBottomWidth: .5,
+      borderColor: 'lightgray',
+       paddingTop: 20
+    },
+    podcastTitle: {
+      fontSize: 20,
+      marginBottom: 8,
+      textAlign: 'right',
+    },
+    podcastDescription: {
+      fontSize: 12,
+      marginBottom: 6,
+      textAlign: 'center',
+    },
+    listView: {
+       backgroundColor: '#F5FCFF',
+       paddingTop: 30
+    },
 });
 
 AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);
