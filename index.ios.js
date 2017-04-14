@@ -142,8 +142,10 @@ export default class AwesomeProject extends Component {
 
     render() {
         var {isLoading} = this.state;
-        if(isLoading)
-            return this.renderLoadingMessage();
+        if(isLoading) {
+          console.log("render loading message");
+          return this.renderLoadingMessage();
+        }
         else
             return this.renderResults(this.state.dataSource); //A component may choose to pass its state down as props to its child components
     }
@@ -205,12 +207,14 @@ export default class AwesomeProject extends Component {
     renderLoadingMessage() {
         return (
             <View style={styles.loadingContainer}>
+                <Image
+                  source={require('./static/img/vplogo.jpg')}
+                  style={styles.logo}/>
                 <ActivityIndicator
                     animating={true}
-                    color={'#fff'}
-                    size={'small'}
+                    color={'#000'}
+                    size={'large'}
                     style={{margin: 15}} />
-                <Text style={{color: '#fff'}}>Contacting Varsity Podcasts</Text>
             </View>
         );
     }
@@ -262,14 +266,18 @@ const styles = StyleSheet.create({
         },
     loadingContainer: {
         flex: 1,
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#000'
+        backgroundColor: '#fff'
         },
     thumbnail: {
-        width: 150,
+        width: 200,
         height: 150
+        },
+    logo: {
+        width: 300,
+        height: 163
         },
     rightContainer: {
         flex: 1,
