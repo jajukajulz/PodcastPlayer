@@ -11,6 +11,8 @@ var RESEARCHREPORT_URL = "https://www.varsitypodcasts.co.za/category/shows/resea
 var DOMParser = require('xmldom').DOMParser;
 var Dimensions = require('Dimensions');
 var windowSize = Dimensions.get('window');
+var styles = require('./static/css/style');
+
 
 /**
  * Necessary imports
@@ -29,6 +31,10 @@ import {
   Row,
   Image
 } from 'react-native';
+import BrowseTracksView from './components/BrowseTracksView';
+import PlayTrackView from './components/PlayTrackView';
+
+
 
 //The NavigatorSceneConfigs Object lets you customize your scene navigation. Now add the SceneConfig:
 
@@ -50,78 +56,6 @@ var CustomSceneConfig = Object.assign({}, BaseConfig, {
     gestures: {
         pop: CustomLeftToRightGesture,
     }
-});
-
-
-//We're going to add two Pages to our Navigation Flow.
-//TODO - rename this to BrowseTracksView
-var PageOne = React.createClass({
-
-    _handlePress() {
-        this.props.navigator.push({id: 2,}); //push appends one or more elements to the end of an array. This alters the array on which the method was called.
-    },
-
-      _pressRow(selected_feed) {
-    this.refs.navigator.push({
-      name: 'details',
-      feed_data: selected_feed
-    })
-  },
-
-    /**
-     * List item render
-     */
-      _renderFeed(feed) {
-        return (
-          <TouchableHighlight onPress={() => this._pressRow(feed)}>
-            <View style={styles.podcastListRow}>
-              <Image
-                source={{uri: feed.thumbnail}}
-                style={styles.thumbnail}/>
-              <View style={styles.rightContainer}>
-                <Text style={styles.podcastTitle}>{feed.title}</Text>
-              </View>
-            </View>
-          </TouchableHighlight>
-        );
-      },
-
-render() {
-    return (
-      <View style={[styles.container]}>
-        <ListView
-            dataSource={this.props.dataSource}
-            renderRow={this._renderFeed}
-            style={styles.listView}
-            //list={route.list}
-            />
-        <TouchableOpacity onPress={this._handlePress}>
-          <View style={{paddingVertical: 5, paddingHorizontal: 20, backgroundColor: 'black'}}>
-            <Text style={styles.welcome}>Go to page two</Text>
-          </View>
-        </TouchableOpacity>
-       </View>
-    )
-  },
-});
-
-var PageTwo = React.createClass({
-  _handlePress() {
-    this.props.navigator.pop(); //The pop() method pulls the last element off of the given array and returns it. This alters the array on which the method was called.
-  },
-
-render() {
-    return (
-      <View style={[styles.container]}>
-        <Text style={styles.welcome}>This is page two!</Text>
-        <TouchableOpacity onPress={this._handlePress}>
-          <View style={{paddingVertical: 10, paddingHorizontal: 20, backgroundColor: 'black'}}>
-            <Text style={styles.welcome}>Go back</Text>
-          </View>
-        </TouchableOpacity>
-       </View>
-    )
-  },
 });
 
 export default class AwesomeProject extends Component {
@@ -151,10 +85,10 @@ export default class AwesomeProject extends Component {
     }
 
     _renderScene(route, navigator) {
-        if (route.id === 1) {
-          return <PageOne navigator={navigator} dataSource={route.dataSource}/> //PageOne will access navigator as this.props.navigator
-        } else if (route.id === 2) {
-          return <PageTwo navigator={navigator} />
+        if (route.id === 'BrowseTracksView') {
+          return <BrowseTracksView navigator={navigator} dataSource={route.dataSource}/> //PageOne will access navigator as this.props.navigator
+        } else if (route.id === 'PlayTrackView') {
+          return <PlayTrackView navigator={navigator} />
         }
     }
 
@@ -222,7 +156,7 @@ export default class AwesomeProject extends Component {
     renderResults(dataSource) {
         return (
                 <Navigator
-                initialRoute={{id: 1, dataSource: dataSource }} //sets up route object with id 1
+                initialRoute={{id: 'BrowseTracksView', dataSource: dataSource }} //sets up route object with id 1
                 renderScene={this._renderScene} // renderScene of navigator which gives you access to the route and navigator objects.
                 configureScene={this._configureScene} //configureScene prop is Optional function where you can configure scene animations and gestures.
                 navigationBar={
@@ -230,7 +164,7 @@ export default class AwesomeProject extends Component {
                     routeMapper={{
                         LeftButton: (route, navigator, index, navState) =>
                             {
-                                if (route.index === 1) {
+                                if (route.index === 'BrowseTracksView') {
                                     return null;
                                     } else {
                                     return (
@@ -249,90 +183,6 @@ export default class AwesomeProject extends Component {
         );
       }
 }
-
-const styles = StyleSheet.create({
-
-    container: {
-        flex: 1, //flex attribute of 1 to let it expand to fill it’s parent e.g. the iOS device window
-        backgroundColor: '#fff',
-        paddingTop: 30
-        },
-    welcome: {
-        fontSize: 20,
-        textAlign: 'center',
-        margin: 10,
-        color: 'white',
-        },
-    loadingContainer: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff'
-        },
-    thumbnail: {
-        width: 70,
-        height: 50
-        },
-    logo: {
-        width: 300,
-        height: 163
-        },
-    navbar: {
-      backgroundColor:'#F5FCFF',
-        //paddingTop: 50
-    },
-    rightContainer: {
-        flex: 1,
-    },
-    year: {
-        textAlign: 'center',
-    },
-    descriptionText: {
-        fontSize: 20,
-        color: '#FFFFFF'
-    },
-    date: {
-        marginTop: 20,
-        textAlign: 'center',
-        color: '#FF1422'
-    },
-    fullImage: {
-        width: windowSize.width,
-        height: 300,
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,0)'
-    },
-    scrollView: {
-        flex:1
-    },
-    podcastListRow: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginLeft: 4,
-      marginRight: 4,
-      padding: 4,
-      borderBottomWidth: .5,
-      borderColor: 'lightgray',
-       paddingTop: 20
-    },
-    podcastTitle: {
-      fontSize: 20,
-      marginBottom: 8,
-      textAlign: 'right',
-    },
-    podcastDescription: {
-      fontSize: 12,
-      marginBottom: 6,
-      textAlign: 'center',
-    },
-    listView: {
-       backgroundColor: '#F5FCFF',
-       paddingTop: 30
-    },
-});
 
 AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);
 
