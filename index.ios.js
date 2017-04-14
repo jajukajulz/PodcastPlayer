@@ -243,7 +243,7 @@ export default class AwesomeProject extends Component {
                         RightButton: (route, navigator, index, navState) =>
                         { return (<Text>Done</Text>); },
                         Title: (route, navigator, index, navState) => { return (<Text>Awesome Nav Bar</Text>); },
-                        }} style={{backgroundColor: 'gray'}}
+                      }} style={styles.navbar}
                     />
                 }/>
         );
@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#F5FCFF',
+        backgroundColor: '#fff',
         },
     welcome: {
         fontSize: 20,
@@ -279,6 +279,9 @@ const styles = StyleSheet.create({
         width: 300,
         height: 163
         },
+    navbar: {
+      backgroundColor:'#F5FCFF'
+    },
     rightContainer: {
         flex: 1,
         marginLeft: 10
