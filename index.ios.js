@@ -88,7 +88,7 @@ export default class AwesomeProject extends Component {
         if (route.id === 'BrowseTracksView') {
           return <BrowseTracksView navigator={navigator} dataSource={route.dataSource}/> //PageOne will access navigator as this.props.navigator
         } else if (route.id === 'PlayTrackView') {
-          return <PlayTrackView navigator={navigator} />
+          return <PlayTrackView navigator={navigator} feed_data={route.feed_data} />
         }
     }
 

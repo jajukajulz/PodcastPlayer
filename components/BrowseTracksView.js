@@ -22,9 +22,6 @@ export default class BrowseTracksView extends React.Component {
   constructor(props) {
       super(props);
   }
-    _handlePress() {
-        this.props.navigator.push({id: 2,}); //push appends one or more elements to the end of an array. This alters the array on which the method was called.
-    }
 
       _pressRow(selected_feed) {
         this.props.navigator.push({
@@ -61,12 +58,7 @@ export default class BrowseTracksView extends React.Component {
             style={styles.listView}
             //list={route.list}
             />
-        <TouchableOpacity onPress={() => this._handlePress()}>
-          <View style={{paddingVertical: 5, paddingHorizontal: 20, backgroundColor: 'black'}}>
-            <Text style={styles.welcome}>Go to page two</Text>
-          </View>
-        </TouchableOpacity>
-       </View>
+      </View>
     )
   }
 };
