@@ -128,10 +128,12 @@ export default class AwesomeProject extends Component {
         podcast_image = podcast_image.replace("http://","https://")
 
         for (var i=0; i < items.length; i++) {
+          var mp3=items[i].getElementsByTagName('enclosure')[0].getAttribute('url');
+          //mp3 = mp3.replace("http://","https://")
           items_array.push({
             title: items[i].getElementsByTagName('title')[0].lastChild.data,
             description: items[i].getElementsByTagName('description')[0].lastChild.data,
-            mp3: items[i].getElementsByTagName('enclosure')[0].getAttribute('url'),
+            mp3: mp3,
             thumbnail: podcast_image
           })
         }
@@ -176,7 +178,7 @@ export default class AwesomeProject extends Component {
                             },
                         RightButton: (route, navigator, index, navState) =>
                         { return (<Text>Done</Text>); },
-                        Title: (route, navigator, index, navState) => { return (<Text>Awesome Nav Bar</Text>); },
+                        Title: (route, navigator, index, navState) => { return (<Text>Varsity Podcasts</Text>); },
                       }} style={styles.navbar}
                     />
                 }/>

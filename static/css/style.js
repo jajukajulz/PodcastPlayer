@@ -91,6 +91,35 @@ module.exports = StyleSheet.create({
        backgroundColor: '#F5FCFF',
        paddingTop: 30
     },
+    buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'stretch',
+  },
+  largeArtwork: {
+    width: 300,
+    height: 200
+  },
+  playButton: {
+    backgroundColor: '#4472B9',
+    margin: 4,
+    padding: 4,
+    borderRadius: 4,
+    flex: 1
+  },
+  playButtonText: {
+    color: 'white',
+    fontSize: 20
+  },
+  trackScreen: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+    paddingTop: 30
+  },
+
 
 
 });

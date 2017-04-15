@@ -10,6 +10,9 @@
     "node-podcast-parser": "^1.0.2",
     "react": "15.4.2",
     "react-native": "0.42.0",
+    "react-native-audio-streamer": "0.0.7",
+    "react-native-icons": "^0.7.1",
+    "react-native-streaming-player": "^1.0.0",
     "react-native-theme": "^0.1.7",
     "request": "^2.81.0",
     "xmldom": "^0.1.27"

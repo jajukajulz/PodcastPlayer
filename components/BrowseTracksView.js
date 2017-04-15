@@ -29,7 +29,7 @@ export default class BrowseTracksView extends React.Component {
         feed_data: selected_feed
       });
   }
-
+ //TODO ADD a searcg bar
     /**
      * List item render
      <!--() => binds to component so you can use this -->
