@@ -36,3 +36,31 @@ https://medium.com/differential/react-native-basics-how-to-use-the-listview-comp
 \
 react-native ui kit\
 http://shoutem.github.io/docs/ui-toolkit/introduction}
+
+
+//old way of starting
+react-native init AwesomeProject
+cd AwesomeProject
+react-native run-ios
+
+15 Jan 2018
+cd AwesomeProject
+npm start
+npm run ios or npm run android
+
+
+install specific version of npm - npm i -g npm@4.6.1
+check npm version npm -v
+see npm versions npm view npm versions --json
+
+
+install node v 8.9.0 - sudo n 8.9.0
+https://nodejs.org/en/download/releases/ -- node releases and corresponding npm releases
+create react native app requires npm 4 and node > 6
+
+
+react-native debugger not ready - Runtime is not ready for debugging in ios simulator
+Debugging on a device with Chrome Developer Tools. If you're using Create React Native App,
+this is configured for you already. On iOS devices, open the file RCTWebSocketExecutor.m and
+change "localhost" to the IP address of your computer, then select "Debug JS Remotely" from the Developer Menu.
+e.g. 192.168.1.103

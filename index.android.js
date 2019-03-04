@@ -4,5 +4,5 @@
 import React, { AppRegistry } from 'react-native';
 import CodeSharing from './app/index';
 
-AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);
+AppRegistry.registerComponent('PodcastPlayer', () => PodcastPlayer);
 

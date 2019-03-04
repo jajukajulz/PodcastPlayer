@@ -62,7 +62,7 @@ var CustomSceneConfig = Object.assign({}, BaseConfig, {
     }
 });
 
-export default class AwesomeProject extends Component {
+export default class PodcastPlayer extends Component {
     constructor(props) {
         super(props);
 
@@ -190,6 +190,6 @@ export default class AwesomeProject extends Component {
       }
 }
 
-AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);
+AppRegistry.registerComponent('PodcastPlayer', () => PodcastPlayer);
 
-module.exports = AwesomeProject;
+module.exports = PodcastPlayer;

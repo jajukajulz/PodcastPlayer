@@ -2,7 +2,7 @@
 // index.android.js
 
 import React, { AppRegistry } from 'react-native';
-import AwesomeProject from './app/index';
+import PodcastPlayer from './app/index';
 
-AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);
+AppRegistry.registerComponent('PodcastPlayer', () => PodcastPlayer);
 
