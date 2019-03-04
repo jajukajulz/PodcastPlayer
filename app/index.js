@@ -19,12 +19,16 @@ var styles = require('../static/css/style');
  */
 import React, { Component } from 'react';
 import {
-  AppRegistry, //AppRegistry is the JS entry point to running all React Native apps. App root components should register themselves with AppRegistry.registerComponent, then the native system can load the bundle for the app and then actually run the app when it's ready by invoking AppRegistry.runApplication
+  //AppRegistry is the JS entry point to running all React Native apps. App root components should register themselves
+  // with AppRegistry.registerComponent, then the native system can load the bundle for the app and then actually run
+  // the app when it's ready by invoking AppRegistry.runApplication
+  AppRegistry,
   StyleSheet,
   Text,
   View,
   Navigator, //Navigator handles the transition between different scenes in your app
-  TouchableOpacity, //A wrapper for making views respond properly to touches. On press down, the opacity of the wrapped view is decreased, dimming it.
+//A wrapper for making views respond properly to touches. On press down, the opacity of the wrapped view is decreased, dimming it.
+  TouchableOpacity,
   TouchableHighlight,
   ActivityIndicator,
   ListView,
